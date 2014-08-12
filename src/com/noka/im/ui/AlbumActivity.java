@@ -31,8 +31,8 @@ import cn.bmob.v3.listener.FindListener;
 import com.noka.im.R;
 import com.noka.im.album.PhotoActivity;
 import com.noka.im.album.PhotoPicActivity;
-import com.noka.im.bean.Album;
 import com.noka.im.bean.User;
+import com.noka.im.bean.album.NokaPhoto;
 import com.noka.im.util.AsyncImageLoader;
 import com.noka.im.util.AsyncImageLoader.ImageCallback;
 import com.noka.im.view.HeaderLayout.onRightImageButtonClickListener;
@@ -183,15 +183,15 @@ public class AlbumActivity extends BaseActivity {
 			new Thread(new Runnable() {
 				public void run() {
 					User user = userManager.getCurrentUser(User.class);
-					BmobQuery<Album> bq = new BmobQuery<Album>();
+					BmobQuery<NokaPhoto> bq = new BmobQuery<NokaPhoto>();
 					bq.addWhereEqualTo("userId", user.getObjectId());
 					bq.setSkip(0);
 					bq.setLimit(100);
-					bq.findObjects(getApplicationContext(), new FindListener<Album>() {
+					bq.findObjects(getApplicationContext(), new FindListener<NokaPhoto>() {
 						@Override
-						public void onSuccess(List<Album> list) {
-							for(Album album:list){
-									BmobFile img = album.getImage();
+						public void onSuccess(List<NokaPhoto> list) {
+							for(NokaPhoto nokaPhoto:list){
+									BmobFile img = nokaPhoto.getImage();
 									String fileUrl = img.getFileUrl();
 									System.out.println(fileUrl);
 									imgs.add(fileUrl);

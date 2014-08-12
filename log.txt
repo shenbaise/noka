@@ -1,0 +1,55 @@
+08-12 23:28:22.599: E/(15761): 保存图片
+08-12 23:28:22.668: E/(15761): 已经保存
+08-12 23:28:22.820: E/(15761): 保存图片
+08-12 23:28:22.890: E/(15761): 已经保存
+08-12 23:28:23.074: E/(15761): 保存图片
+08-12 23:28:23.247: E/(15761): 已经保存
+08-12 23:28:23.413: E/(15761): 保存图片
+08-12 23:28:23.467: E/(15761): 已经保存
+08-12 23:28:23.633: E/(15761): 保存图片
+08-12 23:28:23.669: E/(15761): 已经保存
+08-12 23:28:23.866: E/(15761): 保存图片
+08-12 23:28:23.934: E/(15761): 已经保存
+08-12 23:28:57.030: E/WindowManager(15761): Activity com.noka.im.album.PublishedActivity has leaked window com.android.internal.policy.impl.PhoneWindow$DecorView@41bc3768 that was originally added here
+08-12 23:28:57.030: E/WindowManager(15761): android.view.WindowLeaked: Activity com.noka.im.album.PublishedActivity has leaked window com.android.internal.policy.impl.PhoneWindow$DecorView@41bc3768 that was originally added here
+08-12 23:28:57.030: E/WindowManager(15761): 	at android.view.ViewRootImpl.<init>(ViewRootImpl.java:431)
+08-12 23:28:57.030: E/WindowManager(15761): 	at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:294)
+08-12 23:28:57.030: E/WindowManager(15761): 	at android.view.WindowManagerImpl.addView(WindowManagerImpl.java:226)
+08-12 23:28:57.030: E/WindowManager(15761): 	at android.view.WindowManagerImpl$CompatModeWrapper.addView(WindowManagerImpl.java:151)
+08-12 23:28:57.030: E/WindowManager(15761): 	at android.view.Window$LocalWindowManager.addView(Window.java:547)
+08-12 23:28:57.030: E/WindowManager(15761): 	at android.app.Dialog.show(Dialog.java:277)
+08-12 23:28:57.030: E/WindowManager(15761): 	at com.noka.im.album.PublishedActivity$2.onClick(PublishedActivity.java:92)
+08-12 23:28:57.030: E/WindowManager(15761): 	at com.noka.im.view.HeaderLayout$2.onClick(HeaderLayout.java:133)
+08-12 23:28:57.030: E/WindowManager(15761): 	at android.view.View.performClick(View.java:4109)
+08-12 23:28:57.030: E/WindowManager(15761): 	at android.view.View$PerformClick.run(View.java:17090)
+08-12 23:28:57.030: E/WindowManager(15761): 	at android.os.Handler.handleCallback(Handler.java:615)
+08-12 23:28:57.030: E/WindowManager(15761): 	at android.os.Handler.dispatchMessage(Handler.java:92)
+08-12 23:28:57.030: E/WindowManager(15761): 	at android.os.Looper.loop(Looper.java:153)
+08-12 23:28:57.030: E/WindowManager(15761): 	at android.app.ActivityThread.main(ActivityThread.java:5022)
+08-12 23:28:57.030: E/WindowManager(15761): 	at java.lang.reflect.Method.invokeNative(Native Method)
+08-12 23:28:57.030: E/WindowManager(15761): 	at java.lang.reflect.Method.invoke(Method.java:511)
+08-12 23:28:57.030: E/WindowManager(15761): 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:1032)
+08-12 23:28:57.030: E/WindowManager(15761): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:790)
+08-12 23:28:57.030: E/WindowManager(15761): 	at dalvik.system.NativeStart.main(Native Method)
+08-12 23:28:57.031: E/WindowManager(15761): Debug tips: Please use the Activity.isFinishing() to check your activity lifecyle
+08-12 23:29:01.761: E/AndroidRuntime(15761): FATAL EXCEPTION: main
+08-12 23:29:01.761: E/AndroidRuntime(15761): java.lang.IllegalArgumentException: View not attached to window manager
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at android.view.WindowManagerImpl.findViewLocked(WindowManagerImpl.java:656)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at android.view.WindowManagerImpl.removeView(WindowManagerImpl.java:351)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at android.view.WindowManagerImpl$CompatModeWrapper.removeView(WindowManagerImpl.java:162)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at android.app.Dialog.dismissDialog(Dialog.java:319)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at android.app.Dialog.dismiss(Dialog.java:302)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at com.noka.im.album.PublishedActivity$2$1$1$1.onSuccess(PublishedActivity.java:120)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at cn.bmob.v3.BmobObject$1.onSuccess(SourceFile:243)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at cn.bmob.v3.requestmanager.thing$1.V(SourceFile:1)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at cn.bmob.v3.requestmanager.This.Code(SourceFile:1)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at f.I.run(SourceFile:99)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at android.os.Handler.handleCallback(Handler.java:615)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at android.os.Handler.dispatchMessage(Handler.java:92)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at android.os.Looper.loop(Looper.java:153)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at android.app.ActivityThread.main(ActivityThread.java:5022)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at java.lang.reflect.Method.invokeNative(Native Method)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at java.lang.reflect.Method.invoke(Method.java:511)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:1032)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:790)
+08-12 23:29:01.761: E/AndroidRuntime(15761): 	at dalvik.system.NativeStart.main(Native Method)

@@ -41,8 +41,8 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
 import com.noka.im.R;
-import com.noka.im.bean.Album;
 import com.noka.im.bean.User;
+import com.noka.im.bean.album.NokaPhoto;
 import com.noka.im.ui.BaseActivity;
 import com.noka.im.view.HeaderLayout.onRightImageButtonClickListener;
 
@@ -59,7 +59,9 @@ public class PublishedActivity extends BaseActivity {
 		
 		Init();
 	}
-
+	
+	Handler h = new Handler();
+	
 	public void Init() {
 		noScrollgridview = (GridView) findViewById(R.id.noScrollgridview);
 		noScrollgridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
@@ -88,29 +90,46 @@ public class PublishedActivity extends BaseActivity {
 				progress.setMessage("正在上传...");
 				progress.setCanceledOnTouchOutside(false);
 				progress.show();
-				
-				final List<String> list = new ArrayList<String>();				
-				for (int i = 0; i < Bimp.img2upload.size(); i++) {
-					String Str = Bimp.img2upload.get(i).substring( 
-							Bimp.img2upload.get(i).lastIndexOf("/") + 1,
-							Bimp.img2upload.get(i).lastIndexOf("."));
-					list.add(FileUtils.SDPATH+Str+".JPEG");
-				}
-				final User user = userManager.getCurrentUser(User.class);
-				for(int i = 0;i<list.size();i++){
-					String img = list.get(i);
-					final int r = i;
-					final BmobFile file = new BmobFile(new File(img));
-					file.upload(getApplicationContext(), new UploadFileListener() {
-						@Override
-						public void onSuccess() {
-							Album a = new Album();
-							a.setImage(file);
-							a.setUserId(user.getObjectId());
-							a.save(getApplicationContext(), new SaveListener() {
+				h.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						final List<String> list = new ArrayList<String>();				
+						for (int i = 0; i < Bimp.img2upload.size(); i++) {
+							String Str = Bimp.img2upload.get(i).substring( 
+									Bimp.img2upload.get(i).lastIndexOf("/") + 1,
+									Bimp.img2upload.get(i).lastIndexOf("."));
+							list.add(FileUtils.SDPATH+Str+".JPEG");
+						}
+						final User user = userManager.getCurrentUser(User.class);
+						for(int i = 0;i<list.size();i++){
+							String img = list.get(i);
+							final int r = i;
+							final BmobFile file = new BmobFile(new File(img));
+							
+							file.uploadblock(getApplicationContext(), new UploadFileListener() {
 								@Override
 								public void onSuccess() {
-									progress.setMessage("正在上传第"+(r+1)+"张图片");
+									NokaPhoto a = new NokaPhoto();
+									a.setImage(file);
+									a.setUserId(user.getObjectId());
+									a.save(getApplicationContext(), new SaveListener() {
+										@Override
+										public void onSuccess() {
+											progress.setMessage("正在上传第"+(r+1)+"张图片");
+											if(r==(list.size()-1)){
+												progress.dismiss();
+											}
+										}
+										@Override
+										public void onFailure(int arg0, String arg1) {
+											if(r==(list.size()-1)){
+												progress.dismiss();
+											}
+										}
+									});
+								}
+								@Override
+								public void onProgress(Integer arg0) {
 									if(r==(list.size()-1)){
 										progress.dismiss();
 									}
@@ -123,29 +142,19 @@ public class PublishedActivity extends BaseActivity {
 								}
 							});
 						}
-						@Override
-						public void onProgress(Integer arg0) {
-							if(r==(list.size()-1)){
-								progress.dismiss();
-							}
-						}
-						@Override
-						public void onFailure(int arg0, String arg1) {
-							if(r==(list.size()-1)){
-								progress.dismiss();
-							}
-						}
-					});
-				}
-				progress.dismiss();
+						FileUtils.deleteDir();
+						finish();
+					}
+				}, 200);
+				
+				//progress.dismiss();
 				// 高清的压缩图片全部就在  list 路径里面了
 				// 高清的压缩过的 bmp 对象  都在 Bimp.bmp里面
 				// 完成上传服务器后 .........
-				FileUtils.deleteDir();
-				finish();
+				
 			}});
 	}
-
+	
 	@SuppressLint("HandlerLeak")
 	public class GridAdapter extends BaseAdapter {
 		private LayoutInflater inflater; // 视图容器
