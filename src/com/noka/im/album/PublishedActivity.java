@@ -116,36 +116,25 @@ public class PublishedActivity extends BaseActivity {
 										@Override
 										public void onSuccess() {
 											progress.setMessage("正在上传第"+(r+1)+"张图片");
-											if(r==(list.size()-1)){
-												progress.dismiss();
-											}
 										}
 										@Override
 										public void onFailure(int arg0, String arg1) {
-											if(r==(list.size()-1)){
-												progress.dismiss();
-											}
 										}
 									});
 								}
 								@Override
 								public void onProgress(Integer arg0) {
-									if(r==(list.size()-1)){
-										progress.dismiss();
-									}
 								}
 								@Override
 								public void onFailure(int arg0, String arg1) {
-									if(r==(list.size()-1)){
-										progress.dismiss();
-									}
 								}
 							});
 						}
-						FileUtils.deleteDir();
+						progress.dismiss();
+//						FileUtils.deleteDir();
 						finish();
 					}
-				}, 200);
+				}, 300);
 				
 				//progress.dismiss();
 				// 高清的压缩图片全部就在  list 路径里面了
