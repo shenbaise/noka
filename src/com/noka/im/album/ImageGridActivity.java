@@ -1,5 +1,6 @@
 package com.noka.im.album;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -22,8 +23,11 @@ import android.widget.Toast;
 
 import com.noka.im.R;
 import com.noka.im.album.ImageGridAdapter.TextCallback;
+import com.noka.im.config.NokaConstants;
 
 public class ImageGridActivity extends Activity {
+	
+	private static String toastMsg = "最多选择"+NokaConstants.MAX_PIC_TO_UPLOAD+"张图片";
 	public static final String EXTRA_IMAGE_LIST = "imagelist";
 
 	List<ImageItem> dataList;
@@ -31,20 +35,29 @@ public class ImageGridActivity extends Activity {
 	ImageGridAdapter adapter;
 	AlbumHelper helper;
 	Button bt;
-
-	Handler mHandler = new Handler() {
+	
+	/**
+	 * @author shenbai
+	 * handle msg
+	 */
+	static class MyHandler extends Handler {
+		WeakReference<ImageGridActivity> mActivity;
+		MyHandler(ImageGridActivity activity) {
+			mActivity = new WeakReference<ImageGridActivity>(activity);
+		}
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 0:
-				Toast.makeText(ImageGridActivity.this, "最多选择9张图片", 400).show();
+				Toast.makeText(mActivity.get(), toastMsg, Toast.LENGTH_SHORT).show();
 				break;
-
 			default:
 				break;
 			}
 		}
-	};
+	}
+		
+	private Handler handler = new MyHandler(this);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +82,14 @@ public class ImageGridActivity extends Activity {
 					list.add(it.next());
 				}
 
-				if (Bimp.act_bool) {
+				if (BitmapUtils.act_bool) {
 					Intent intent = new Intent(ImageGridActivity.this,PublishedActivity.class);
 					startActivity(intent);
-					Bimp.act_bool = false;
+					BitmapUtils.act_bool = false;
 				}
 				for (int i = 0; i < list.size(); i++) {
-					if (Bimp.img2upload.size() < 9) {
-						Bimp.img2upload.add(list.get(i));
+					if (BitmapUtils.selectedImages.size() < NokaConstants.MAX_PIC_TO_UPLOAD) {
+						BitmapUtils.selectedImages.add(list.get(i));
 					}
 				}
 				finish();
@@ -88,7 +101,7 @@ public class ImageGridActivity extends Activity {
 		gridView = (GridView) findViewById(R.id.gridview);
 		gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
 		adapter = new ImageGridAdapter(ImageGridActivity.this, dataList,
-				mHandler);
+				handler);
 		gridView.setAdapter(adapter);
 		adapter.setTextCallback(new TextCallback() {
 			public void onListen(int count) {

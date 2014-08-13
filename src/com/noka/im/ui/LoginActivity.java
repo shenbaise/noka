@@ -17,7 +17,7 @@ import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.listener.SaveListener;
 
 import com.noka.im.R;
-import com.noka.im.config.BmobConstants;
+import com.noka.im.config.NokaConstants;
 import com.noka.im.util.CommonUtils;
 
 /**
@@ -42,7 +42,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		init();
 		//注册退出广播
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(BmobConstants.ACTION_REGISTER_SUCCESS_FINISH);
+		filter.addAction(NokaConstants.ACTION_REGISTER_SUCCESS_FINISH);
 		registerReceiver(receiver, filter);
 	}
 
@@ -59,7 +59,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (intent != null && BmobConstants.ACTION_REGISTER_SUCCESS_FINISH.equals(intent.getAction())) {
+			if (intent != null && NokaConstants.ACTION_REGISTER_SUCCESS_FINISH.equals(intent.getAction())) {
 				finish();
 			}
 		}

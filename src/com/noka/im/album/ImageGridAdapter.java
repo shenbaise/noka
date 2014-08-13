@@ -8,13 +8,13 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import cn.bmob.im.util.BmobLog;
 
 import com.noka.im.R;
 import com.noka.im.album.BitmapCache.ImageCallback;
@@ -25,8 +25,7 @@ public class ImageGridAdapter extends BaseAdapter {
 	final String TAG = getClass().getSimpleName();
 	Activity act;
 	List<ImageItem> dataList;
-	Map<String, String> map = new HashMap<String, String>
-	();
+	Map<String, String> map = new HashMap<String, String>();
 	BitmapCache cache;
 	private Handler mHandler;
 	private int selectTotal = 0;
@@ -39,10 +38,10 @@ public class ImageGridAdapter extends BaseAdapter {
 				if (url != null && url.equals((String) imageView.getTag())) {
 					((ImageView) imageView).setImageBitmap(bitmap);
 				} else {
-					Log.e(TAG, "callback, bmp not match");
+					BmobLog.i(TAG, "callback, bmp not match");
 				}
 			} else {
-				Log.e(TAG, "callback, bmp null");
+				BmobLog.e(TAG, "callback, bmp null");
 			}
 		}
 	};
@@ -115,13 +114,13 @@ public class ImageGridAdapter extends BaseAdapter {
 			holder.selected.setImageResource(-1);
 			holder.text.setBackgroundColor(0x00000000);
 		}
+		
 		holder.iv.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				String path = dataList.get(position).imagePath;
 
-				if ((Bimp.img2upload.size() + selectTotal) < 9) {
+				if ((BitmapUtils.selectedImages.size() + selectTotal) < 9) {
 					item.isSelected = !item.isSelected;
 					if (item.isSelected) {
 						holder.selected
@@ -140,7 +139,7 @@ public class ImageGridAdapter extends BaseAdapter {
 							textcallback.onListen(selectTotal);
 						map.remove(path);
 					}
-				} else if ((Bimp.img2upload.size() + selectTotal) >= 9) {
+				} else if ((BitmapUtils.selectedImages.size()+ selectTotal) >= 9) {
 					if (item.isSelected == true) {
 						item.isSelected = !item.isSelected;
 						holder.selected.setImageResource(-1);

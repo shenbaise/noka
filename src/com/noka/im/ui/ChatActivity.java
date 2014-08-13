@@ -61,7 +61,7 @@ import com.noka.im.adapter.EmoteAdapter;
 import com.noka.im.adapter.MessageChatAdapter;
 import com.noka.im.adapter.NewRecordPlayClickListener;
 import com.noka.im.bean.FaceText;
-import com.noka.im.config.BmobConstants;
+import com.noka.im.config.NokaConstants;
 import com.noka.im.util.CommonUtils;
 import com.noka.im.util.FaceTextUtils;
 import com.noka.im.view.EmoticonsEditText;
@@ -767,7 +767,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 	private void selectLocationFromMap() {
 		Intent intent = new Intent(this, LocationActivity.class);
 		intent.putExtra("type", "select");
-		startActivityForResult(intent, BmobConstants.REQUESTCODE_TAKE_LOCATION);
+		startActivityForResult(intent, NokaConstants.REQUESTCODE_TAKE_LOCATION);
 	}
 
 	private String localCameraPath = "";// 拍照后得到的图片地址
@@ -780,7 +780,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 	 */
 	public void selectImageFromCamera() {
 		Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		File dir = new File(BmobConstants.BMOB_PICTURE_PATH);
+		File dir = new File(NokaConstants.NOKA_IMAGE_PATH);
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}
@@ -790,7 +790,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 		Uri imageUri = Uri.fromFile(file);
 		openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 		startActivityForResult(openCameraIntent,
-				BmobConstants.REQUESTCODE_TAKE_CAMERA);
+				NokaConstants.REQUESTCODE_TAKE_CAMERA);
 	}
 
 	/**
@@ -812,18 +812,18 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 					Intent.ACTION_PICK,
 					android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 		}
-		startActivityForResult(intent, BmobConstants.REQUESTCODE_TAKE_LOCAL);
+		startActivityForResult(intent, NokaConstants.REQUESTCODE_TAKE_LOCAL);
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
-			case BmobConstants.REQUESTCODE_TAKE_CAMERA:// 当取到值的时候才上传path路径下的图片到服务器
+			case NokaConstants.REQUESTCODE_TAKE_CAMERA:// 当取到值的时候才上传path路径下的图片到服务器
 				ShowLog("本地图片的地址：" + localCameraPath);
 				sendImageMessage(localCameraPath);
 				break;
-			case BmobConstants.REQUESTCODE_TAKE_LOCAL:
+			case NokaConstants.REQUESTCODE_TAKE_LOCAL:
 				if (data != null) {
 					Uri selectedImage = data.getData();
 					if (selectedImage != null) {
@@ -842,7 +842,7 @@ public class ChatActivity extends ActivityBase implements OnClickListener,
 					}
 				}
 				break;
-			case BmobConstants.REQUESTCODE_TAKE_LOCATION:// 地理位置
+			case NokaConstants.REQUESTCODE_TAKE_LOCATION:// 地理位置
 				double latitude = data.getDoubleExtra("x", 0);// 维度
 				double longtitude = data.getDoubleExtra("y", 0);// 经度
 				String address = data.getStringExtra("address");

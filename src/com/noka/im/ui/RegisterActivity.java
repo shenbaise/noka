@@ -15,7 +15,7 @@ import cn.bmob.v3.listener.SaveListener;
 
 import com.noka.im.R;
 import com.noka.im.bean.User;
-import com.noka.im.config.BmobConstants;
+import com.noka.im.config.NokaConstants;
 import com.noka.im.util.CommonUtils;
 
 public class RegisterActivity extends BaseActivity {
@@ -93,7 +93,7 @@ public class RegisterActivity extends BaseActivity {
 				updateUserLocation();
 				
 				//发广播通知登陆页面退出
-				sendBroadcast(new Intent(BmobConstants.ACTION_REGISTER_SUCCESS_FINISH));
+				sendBroadcast(new Intent(NokaConstants.ACTION_REGISTER_SUCCESS_FINISH));
 				// 启动主页
 				Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
 				startActivity(intent);

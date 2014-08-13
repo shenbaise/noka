@@ -48,7 +48,6 @@ public class ImageBucketAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		int count = 0;
 		if (dataList != null) {
 			count = dataList.size();

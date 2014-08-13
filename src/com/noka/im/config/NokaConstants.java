@@ -11,17 +11,25 @@ import android.os.Environment;
   * @date 2014-6-19 下午2:48:33
   */
 @SuppressLint("SdCardPath")
-public class BmobConstants {
+public class NokaConstants {
 
 	/**
-	 * 存放发送图片的目录
+	 * 存放图片的目录
 	 */
-	public static String BMOB_PICTURE_PATH = Environment.getExternalStorageDirectory()	+ "/bmobimdemo/image/";
+	public static String NOKA_IMAGE_PATH = Environment.getExternalStorageDirectory()	+ "/noka/image/";
 	
 	/**
-	 * 我的头像保存目录
+	 * 头像保存目录
 	 */
-	public static String MyAvatarDir = "/sdcard/bmobimdemo/avatar/";
+	public static String AVATAR_PATH = Environment.getExternalStorageDirectory()	 + "/noka/avatar/";
+	/**
+	 * 图像缩略图目录
+	 */
+	public static String NOKA_IMAGE_THUMB_PATH = NOKA_IMAGE_PATH + "thumb/";
+	/**
+	 * 上传图片的最大张数
+	 */
+	public static int MAX_PIC_TO_UPLOAD = 10;
 	/**
 	 * 拍照回调
 	 */

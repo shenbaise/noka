@@ -45,7 +45,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 import com.noka.im.CustomApplcation;
 import com.noka.im.R;
 import com.noka.im.bean.User;
-import com.noka.im.config.BmobConstants;
+import com.noka.im.config.NokaConstants;
 import com.noka.im.util.CollectionUtils;
 import com.noka.im.util.ImageLoadOptions;
 import com.noka.im.util.PhotoUtil;
@@ -343,7 +343,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 						R.color.base_color_text_white));
 				layout_photo.setBackgroundDrawable(getResources().getDrawable(
 						R.drawable.pop_bg_press));
-				File dir = new File(BmobConstants.MyAvatarDir);
+				File dir = new File(NokaConstants.AVATAR_PATH);
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
@@ -356,7 +356,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 				startActivityForResult(intent,
-						BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA);
+						NokaConstants.REQUESTCODE_UPLOADAVATAR_CAMERA);
 			}
 		});
 		layout_choose.setOnClickListener(new OnClickListener() {
@@ -373,7 +373,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 				intent.setDataAndType(
 						MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
 				startActivityForResult(intent,
-						BmobConstants.REQUESTCODE_UPLOADAVATAR_LOCATION);
+						NokaConstants.REQUESTCODE_UPLOADAVATAR_LOCATION);
 			}
 		});
 
@@ -436,7 +436,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
-		case BmobConstants.REQUESTCODE_UPLOADAVATAR_CAMERA:// 拍照修改头像
+		case NokaConstants.REQUESTCODE_UPLOADAVATAR_CAMERA:// 拍照修改头像
 			if (resultCode == RESULT_OK) {
 				if (!Environment.getExternalStorageState().equals(
 						Environment.MEDIA_MOUNTED)) {
@@ -448,10 +448,10 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 				degree = PhotoUtil.readPictureDegree(file.getAbsolutePath());
 				Log.i("life", "拍照后的角度：" + degree);
 				startImageAction(Uri.fromFile(file), 200, 200,
-						BmobConstants.REQUESTCODE_UPLOADAVATAR_CROP, true);
+						NokaConstants.REQUESTCODE_UPLOADAVATAR_CROP, true);
 			}
 			break;
-		case BmobConstants.REQUESTCODE_UPLOADAVATAR_LOCATION:// 本地修改头像
+		case NokaConstants.REQUESTCODE_UPLOADAVATAR_LOCATION:// 本地修改头像
 			if (avatorPop != null) {
 				avatorPop.dismiss();
 			}
@@ -468,13 +468,13 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 				isFromCamera = false;
 				uri = data.getData();
 				startImageAction(uri, 200, 200,
-						BmobConstants.REQUESTCODE_UPLOADAVATAR_CROP, true);
+						NokaConstants.REQUESTCODE_UPLOADAVATAR_CROP, true);
 			} else {
 				ShowToast("照片获取失败");
 			}
 
 			break;
-		case BmobConstants.REQUESTCODE_UPLOADAVATAR_CROP:// 裁剪头像返回
+		case NokaConstants.REQUESTCODE_UPLOADAVATAR_CROP:// 裁剪头像返回
 			// TODO sent to crop
 			if (avatorPop != null) {
 				avatorPop.dismiss();
@@ -561,8 +561,8 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 				// 保存图片
 				String filename = new SimpleDateFormat("yyMMddHHmmss")
 						.format(new Date());
-				path = BmobConstants.MyAvatarDir + filename;
-				PhotoUtil.saveBitmap(BmobConstants.MyAvatarDir, filename,
+				path = NokaConstants.AVATAR_PATH + filename;
+				PhotoUtil.saveBitmap(NokaConstants.AVATAR_PATH, filename,
 						bitmap, true);
 				// 上传头像
 				if (bitmap != null && bitmap.isRecycled()) {

@@ -1,7 +1,6 @@
 package com.noka.im.album;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +42,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 import com.noka.im.R;
 import com.noka.im.bean.User;
 import com.noka.im.bean.album.NokaPhoto;
+import com.noka.im.config.NokaConstants;
 import com.noka.im.ui.BaseActivity;
 import com.noka.im.view.HeaderLayout.onRightImageButtonClickListener;
 
@@ -56,7 +56,6 @@ public class PublishedActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_selectimg);
 		userManager = BmobUserManager.getInstance(this);
-		
 		Init();
 	}
 	
@@ -72,7 +71,7 @@ public class PublishedActivity extends BaseActivity {
 
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				if (arg2 == Bimp.bmp.size()) {
+				if (arg2 == BitmapUtils.bmp.size()) {
 					new PopupWindows(PublishedActivity.this, noScrollgridview);
 				} else {
 					Intent intent = new Intent(PublishedActivity.this,
@@ -94,11 +93,11 @@ public class PublishedActivity extends BaseActivity {
 					@Override
 					public void run() {
 						final List<String> list = new ArrayList<String>();				
-						for (int i = 0; i < Bimp.img2upload.size(); i++) {
-							String Str = Bimp.img2upload.get(i).substring( 
-									Bimp.img2upload.get(i).lastIndexOf("/") + 1,
-									Bimp.img2upload.get(i).lastIndexOf("."));
-							list.add(FileUtils.SDPATH+Str+".JPEG");
+						for (int i = 0; i < BitmapUtils.selectedImages.size(); i++) {
+							String Str = BitmapUtils.selectedImages.get(i).substring( 
+									BitmapUtils.selectedImages.get(i).lastIndexOf("/") + 1,
+									BitmapUtils.selectedImages.get(i).lastIndexOf("."));
+							list.add(NokaConstants.NOKA_IMAGE_PATH+Str+".JPEG");
 						}
 						final User user = userManager.getCurrentUser(User.class);
 						for(int i = 0;i<list.size();i++){
@@ -167,7 +166,7 @@ public class PublishedActivity extends BaseActivity {
 		}
 
 		public int getCount() {
-			return (Bimp.bmp.size() + 1);
+			return (BitmapUtils.bmp.size());
 		}
 
 		public Object getItem(int arg0) {
@@ -206,14 +205,14 @@ public class PublishedActivity extends BaseActivity {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			if (position == Bimp.bmp.size()) {
+			if (position == BitmapUtils.bmp.size()) {
 				holder.image.setImageBitmap(BitmapFactory.decodeResource(
 						getResources(), R.drawable.icon_addpic_unfocused));
 				if (position == 9) {
 					holder.image.setVisibility(View.GONE);
 				}
 			} else {
-				holder.image.setImageBitmap(Bimp.bmp.get(position));
+				holder.image.setImageBitmap(BitmapUtils.bmp.get(position));
 			}
 
 			return convertView;
@@ -238,29 +237,24 @@ public class PublishedActivity extends BaseActivity {
 			new Thread(new Runnable() {
 				public void run() {
 					while (true) {
-						if (Bimp.max == Bimp.img2upload.size()) {
+						if (BitmapUtils.max == BitmapUtils.selectedImages.size()) {
 							Message message = new Message();
 							message.what = 1;
 							handler.sendMessage(message);
 							break;
 						} else {
-							try {
-								String path = Bimp.img2upload.get(Bimp.max);
-								System.out.println(path);
-								Bitmap bm = Bimp.revitionImageSize(path);
-								Bimp.bmp.add(bm);
-								String newStr = path.substring(
-										path.lastIndexOf("/") + 1,
-										path.lastIndexOf("."));
-								FileUtils.saveBitmap(bm, "" + newStr);
-								Bimp.max += 1;
-								Message message = new Message();
-								message.what = 1;
-								handler.sendMessage(message);
-							} catch (IOException e) {
-
-								e.printStackTrace();
-							}
+							String path = BitmapUtils.selectedImages.get(BitmapUtils.max);
+							System.out.println(path);
+							Bitmap bm = BitmapUtils.makeThumb(path);
+							BitmapUtils.bmp.add(bm);
+							String newStr = path.substring(
+									path.lastIndexOf("/") + 1,
+									path.lastIndexOf("."));
+							FileUtils.saveBitmap(bm, "" + newStr);
+							BitmapUtils.max += 1;
+							Message message = new Message();
+							message.what = 1;
+							handler.sendMessage(message);
 						}
 					}
 				}
@@ -351,8 +345,8 @@ public class PublishedActivity extends BaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 		case TAKE_PICTURE:
-			if (Bimp.img2upload.size() < 9 && resultCode == -1) {
-				Bimp.img2upload.add(path);
+			if (BitmapUtils.selectedImages.size() < 9 && resultCode == -1) {
+				BitmapUtils.selectedImages.add(path);
 			}
 			break;
 		}

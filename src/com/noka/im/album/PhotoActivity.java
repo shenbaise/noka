@@ -39,13 +39,13 @@ public class PhotoActivity extends Activity {
 		photo_relativeLayout = (RelativeLayout) findViewById(R.id.photo_relativeLayout);
 		photo_relativeLayout.setBackgroundColor(0x70000000);
 
-		for (int i = 0; i < Bimp.bmp.size(); i++) {
-			bmp.add(Bimp.bmp.get(i));
+		for (int i = 0; i < BitmapUtils.bmp.size(); i++) {
+			bmp.add(BitmapUtils.bmp.get(i));
 		}
-		for (int i = 0; i < Bimp.img2upload.size(); i++) {
-			drr.add(Bimp.img2upload.get(i));
+		for (int i = 0; i < BitmapUtils.selectedImages.size(); i++) {
+			drr.add(BitmapUtils.selectedImages.get(i));
 		}
-		max = Bimp.max;
+		max = BitmapUtils.max;
 
 		Button photo_bt_exit = (Button) findViewById(R.id.photo_bt_exit);
 		photo_bt_exit.setOnClickListener(new View.OnClickListener() {
@@ -58,10 +58,9 @@ public class PhotoActivity extends Activity {
 		photo_bt_del.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (listViews.size() == 1) {
-					Bimp.bmp.clear();
-					Bimp.img2upload.clear();
-					Bimp.max = 0;
-					FileUtils.deleteDir();
+					BitmapUtils.bmp.clear();
+					BitmapUtils.selectedImages.clear();
+					BitmapUtils.max = 0;
 					finish();
 				} else {
 					String newStr = drr.get(count).substring( 
@@ -83,9 +82,9 @@ public class PhotoActivity extends Activity {
 
 			public void onClick(View v) {
 
-				Bimp.bmp = bmp;
-				Bimp.img2upload = drr;
-				Bimp.max = max;
+				BitmapUtils.bmp = bmp;
+				BitmapUtils.selectedImages = drr;
+				BitmapUtils.max = max;
 				for(int i=0;i<del.size();i++){				
 					FileUtils.delFile(del.get(i)+".JPEG"); 
 				}
