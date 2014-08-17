@@ -16,7 +16,7 @@ public class NokaPhoto extends BmobObject {
 	/**
 	 * 相册所有者
 	 */
-	private String userId;
+	private String username;
 	/**
 	 * 相册日期
 	 */
@@ -26,13 +26,11 @@ public class NokaPhoto extends BmobObject {
 	 */
 	private BmobFile image;
 	
-	
-	public String getUserId() {
-		return userId;
+	public String getUsername() {
+		return username;
 	}
-	
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public BmobFile getImage() {
 		return image;

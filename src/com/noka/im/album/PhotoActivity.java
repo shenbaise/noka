@@ -1,7 +1,6 @@
 package com.noka.im.album;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,18 +16,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.noka.im.R;
+import com.noka.im.ui.AlbumActivity;
 
+/**
+ * 
+ * @author shenbai
+ * 显示大图
+ */
 public class PhotoActivity extends Activity {
 
 	private ArrayList<View> listViews = null;
 	private ViewPager pager;
 	private MyPageAdapter adapter;
 	private int count;
-
-	public List<Bitmap> bmp = new ArrayList<Bitmap>();
-	public List<String> drr = new ArrayList<String>();
-	public List<String> del = new ArrayList<String>();
-	public int max;
 
 	RelativeLayout photo_relativeLayout;
 
@@ -38,66 +38,37 @@ public class PhotoActivity extends Activity {
 
 		photo_relativeLayout = (RelativeLayout) findViewById(R.id.photo_relativeLayout);
 		photo_relativeLayout.setBackgroundColor(0x70000000);
-
-		for (int i = 0; i < BitmapUtils.bmp.size(); i++) {
-			bmp.add(BitmapUtils.bmp.get(i));
-		}
-		for (int i = 0; i < BitmapUtils.selectedImages.size(); i++) {
-			drr.add(BitmapUtils.selectedImages.get(i));
-		}
-		max = BitmapUtils.max;
-
+		
 		Button photo_bt_exit = (Button) findViewById(R.id.photo_bt_exit);
 		photo_bt_exit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-
 				finish();
 			}
 		});
-		Button photo_bt_del = (Button) findViewById(R.id.photo_bt_del);
-		photo_bt_del.setOnClickListener(new View.OnClickListener() {
+		Button photo_bt_like = (Button) findViewById(R.id.photo_bt_like);
+		photo_bt_like.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (listViews.size() == 1) {
-					BitmapUtils.bmp.clear();
-					BitmapUtils.selectedImages.clear();
-					BitmapUtils.max = 0;
 					finish();
 				} else {
-					String newStr = drr.get(count).substring( 
-							drr.get(count).lastIndexOf("/") + 1,
-							drr.get(count).lastIndexOf("."));
-					bmp.remove(count);
-					drr.remove(count);
-					del.add(newStr);
-					max--;
-					pager.removeAllViews();
-					listViews.remove(count);
-					adapter.setListViews(listViews);
-					adapter.notifyDataSetChanged();
+					
 				}
 			}
 		});
-		Button photo_bt_enter = (Button) findViewById(R.id.photo_bt_enter);
+		Button photo_bt_enter = (Button) findViewById(R.id.photo_bt_save);
 		photo_bt_enter.setOnClickListener(new View.OnClickListener() {
-
 			public void onClick(View v) {
-
-				BitmapUtils.bmp = bmp;
-				BitmapUtils.selectedImages = drr;
-				BitmapUtils.max = max;
-				for(int i=0;i<del.size();i++){				
-					FileUtils.delFile(del.get(i)+".JPEG"); 
-				}
+				
 				finish();
 			}
 		});
-
+		
+		
 		pager = (ViewPager) findViewById(R.id.viewpager);
 		pager.setOnPageChangeListener(pageChangeListener);
-		for (int i = 0; i < bmp.size(); i++) {
-			initListViews(bmp.get(i));//
+		for (int i = 0; i < AlbumActivity.pics.size(); i++) {
+			initListViews(AlbumActivity.pics.get(i));
 		}
-
 		adapter = new MyPageAdapter(listViews);// 构造adapter
 		pager.setAdapter(adapter);// 设置适配器
 		Intent intent = getIntent();
@@ -115,6 +86,20 @@ public class PhotoActivity extends Activity {
 				LayoutParams.FILL_PARENT));
 		listViews.add(img);// 添加view
 	}
+	
+	
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+	}
+
+
 
 	private OnPageChangeListener pageChangeListener = new OnPageChangeListener() {
 

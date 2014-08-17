@@ -26,8 +26,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -42,7 +40,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 import com.noka.im.R;
 import com.noka.im.bean.User;
 import com.noka.im.bean.album.NokaPhoto;
-import com.noka.im.config.NokaConstants;
+import com.noka.im.ui.AlbumActivity;
 import com.noka.im.ui.BaseActivity;
 import com.noka.im.view.HeaderLayout.onRightImageButtonClickListener;
 
@@ -67,6 +65,7 @@ public class PublishedActivity extends BaseActivity {
 		adapter = new GridAdapter(this);
 		adapter.update();
 		noScrollgridview.setAdapter(adapter);
+		/*
 		noScrollgridview.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
@@ -81,8 +80,9 @@ public class PublishedActivity extends BaseActivity {
 				}
 			}
 		});
+		*/
 		
-		initTopBarForRight("个人相册", R.drawable.base_action_bar_true_bg_n, new onRightImageButtonClickListener(){
+		initTopBarForBoth("个人相册", R.drawable.base_action_bar_true_bg_n, new onRightImageButtonClickListener(){
 			@Override
 			public void onClick() {
 				final ProgressDialog progress = new ProgressDialog(PublishedActivity.this);
@@ -92,12 +92,11 @@ public class PublishedActivity extends BaseActivity {
 				h.postDelayed(new Runnable() {
 					@Override
 					public void run() {
-						final List<String> list = new ArrayList<String>();				
+						final List<String> list = new ArrayList<String>();
 						for (int i = 0; i < BitmapUtils.selectedImages.size(); i++) {
-							String Str = BitmapUtils.selectedImages.get(i).substring( 
-									BitmapUtils.selectedImages.get(i).lastIndexOf("/") + 1,
-									BitmapUtils.selectedImages.get(i).lastIndexOf("."));
-							list.add(NokaConstants.NOKA_IMAGE_PATH+Str+".JPEG");
+							String str = BitmapUtils.selectedImages.get(i);
+							String compressedImg = BitmapUtils.getCompressedImgPath(str);
+							list.add(compressedImg);
 						}
 						final User user = userManager.getCurrentUser(User.class);
 						for(int i = 0;i<list.size();i++){
@@ -110,7 +109,7 @@ public class PublishedActivity extends BaseActivity {
 								public void onSuccess() {
 									NokaPhoto a = new NokaPhoto();
 									a.setImage(file);
-									a.setUserId(user.getObjectId());
+									a.setUsername(user.getUsername());
 									a.save(getApplicationContext(), new SaveListener() {
 										@Override
 										public void onSuccess() {
@@ -123,23 +122,24 @@ public class PublishedActivity extends BaseActivity {
 								}
 								@Override
 								public void onProgress(Integer arg0) {
+									
 								}
 								@Override
 								public void onFailure(int arg0, String arg1) {
+									System.out.println(arg1);
 								}
 							});
 						}
+						BitmapUtils.selectedImages.clear();
 						progress.dismiss();
-//						FileUtils.deleteDir();
+						Intent intent =new Intent(PublishedActivity.this,AlbumActivity.class);
+						intent.putExtra("from", "me");
+						intent.putExtra("username", BmobUserManager.getInstance(PublishedActivity.this)
+							.getCurrentUser().getUsername());
+						startActivity(intent);
 						finish();
 					}
 				}, 300);
-				
-				//progress.dismiss();
-				// 高清的压缩图片全部就在  list 路径里面了
-				// 高清的压缩过的 bmp 对象  都在 Bimp.bmp里面
-				// 完成上传服务器后 .........
-				
 			}});
 	}
 	
@@ -245,12 +245,10 @@ public class PublishedActivity extends BaseActivity {
 						} else {
 							String path = BitmapUtils.selectedImages.get(BitmapUtils.max);
 							System.out.println(path);
-							Bitmap bm = BitmapUtils.makeThumb(path);
+							Bitmap bm = BitmapUtils.fixImageSize(path);
 							BitmapUtils.bmp.add(bm);
-							String newStr = path.substring(
-									path.lastIndexOf("/") + 1,
-									path.lastIndexOf("."));
-							FileUtils.saveBitmap(bm, "" + newStr);
+							
+							FileUtils.saveCompressedImg(bm, path);
 							BitmapUtils.max += 1;
 							Message message = new Message();
 							message.what = 1;

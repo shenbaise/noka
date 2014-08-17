@@ -144,6 +144,8 @@ public class SettingsFragment extends FragmentBase implements OnClickListener{
 		case R.id.layout_info:// 启动到个人资料页面
 			Intent intent =new Intent(getActivity(),SetMyInfoActivity.class);
 			intent.putExtra("from", "me");
+			intent.putExtra("username", BmobUserManager.getInstance(getActivity())
+				.getCurrentUser().getUsername());
 			startActivity(intent);
 			break;
 		case R.id.btn_logout:

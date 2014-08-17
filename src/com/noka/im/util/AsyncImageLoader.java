@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
 //import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -31,9 +30,16 @@ public class AsyncImageLoader {
 	public AsyncImageLoader() {
 		imageCache = new HashMap<String, SoftReference<Drawable>>();
 	}
-
+	
+	/**
+	 * 下载图片，加入缓冲
+	 * @param imageUrl
+	 * @param imageCallback
+	 * @return
+	 */
 	public Drawable loadDrawable(final String imageUrl,final ImageCallback imageCallback) {
-		
+		if(null==imageUrl)
+			return null;
 		if (imageCache.containsKey(imageUrl)) {
 			SoftReference<Drawable> softReference = imageCache.get(imageUrl);
 			Drawable drawable = softReference.get();
@@ -52,6 +58,7 @@ public class AsyncImageLoader {
 			@Override
 			public void run() {
 				Drawable drawable = loadImageFromUrl(imageUrl);
+				String md5 = MD5.encode(imageUrl);
 				Log.e("==", imageUrl);
 				imageCache.put(imageUrl, new SoftReference<Drawable>(drawable));
 				Message message = handler.obtainMessage(0, drawable);
@@ -64,21 +71,24 @@ public class AsyncImageLoader {
 	public static Drawable loadImageFromUrl(String url) {
 		URL m;
 		InputStream i = null;
+		Drawable d = null;
 		try {
 			m = new URL(url);
-			i = (InputStream) m.getContent();
+			i = m.openStream();
+//			i = (InputStream) m.getContent();
+			d = Drawable.createFromStream(i, "src");
 		} catch (MalformedURLException e1) {
 			e1.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-//			if (i != null)
-//				try {
-//					i.close();
-//				} catch (IOException e) {
-//				}
+			if (i != null)
+				try {
+					i.close();
+				} catch (IOException e) {
+				}
 		}
-		Drawable d = Drawable.createFromStream(i, "src");
+//		Drawable d = Drawable.createFromStream(i, "src");
 		return d;
 	}
 

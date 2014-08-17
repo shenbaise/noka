@@ -26,7 +26,7 @@ public class Album extends BmobObject {
 	 */
 	private String desc = "";
 	
-	private String userId = "";
+	private String username = "";
 	
 	public String getDate() {
 		return date;
@@ -44,11 +44,11 @@ public class Album extends BmobObject {
 		this.desc = desc;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }

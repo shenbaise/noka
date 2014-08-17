@@ -11,6 +11,9 @@ import java.util.List;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import cn.bmob.im.util.BmobLog;
+
+import com.noka.im.config.NokaConstants;
+import com.noka.im.util.MD5;
 /**
  * @author shenbai
  * 图片管理工具类
@@ -19,7 +22,10 @@ public class BitmapUtils {
 	private final static String tag = BitmapUtils.class.getSimpleName();
 	public static int max = 0;
 	public static boolean act_bool = true;
-	public static List<Bitmap> bmp = new ArrayList<Bitmap>();	
+	/**
+	 * 要上传的图片集合
+	 */
+	public static List<Bitmap> bmp = new ArrayList<Bitmap>();
 	
 	public static List<String> selectedImages = new ArrayList<String>();
 	
@@ -29,7 +35,19 @@ public class BitmapUtils {
 	 * @return
 	 * @throws IOException
 	 */
-	public static Bitmap fixImageSize(String path) throws IOException {
+	public static Bitmap fixImageSize(String path) {
+		String thumb = MD5.encode(path);
+		Bitmap bitmap =  null;
+		File f = new File(NokaConstants.NOKA_IMAGE_PATH, thumb);
+		if(f.exists()){
+			try {
+				FileInputStream fis = new FileInputStream(f);
+				bitmap = BitmapFactory.decodeStream(fis);
+				return bitmap;
+			} catch (FileNotFoundException e) {
+				System.out.println(e.getMessage());
+			}
+		}
 		return revitionImageSize(path, 1024, 1024);
 	}
 	
@@ -75,9 +93,42 @@ public class BitmapUtils {
 	 * @throws IOException
 	 */
 	public static Bitmap makeThumb(String path) {
-		Bitmap bitmap =  revitionImageSize(path, 256, 256);
-		FileUtils.saveBitmap(bitmap, "" + path);
+		String thumb = MD5.encode(path);
+		Bitmap bitmap =  null;
+		File f = new File(NokaConstants.NOKA_IMAGE_THUMB_PATH, thumb);
+		if(f.exists()){
+			try {
+				FileInputStream fis = new FileInputStream(f);
+				bitmap = BitmapFactory.decodeStream(fis);
+				return bitmap;
+			} catch (FileNotFoundException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		bitmap = revitionImageSize(path, 256, 256);
+		FileUtils.saveThumb(bitmap, "" + path);
 		return bitmap;
 	}
 	
+	public static String getThumbPath(String path) {
+		String thumb = MD5.encode(path);
+		Bitmap bitmap =  null;
+		File f = new File(NokaConstants.NOKA_IMAGE_THUMB_PATH, thumb);
+		if(f.exists()){
+			return f.getAbsolutePath();
+		}
+		bitmap = revitionImageSize(path, 256, 256);
+		return FileUtils.saveThumb(bitmap,  path);
+	}
+	
+	public static String getCompressedImgPath(String path) {
+		String thumb = MD5.encode(path);
+		Bitmap bitmap =  null;
+		File f = new File(NokaConstants.NOKA_IMAGE_PATH, thumb);
+		if(f.exists()){
+			return f.getAbsolutePath();
+		}
+		bitmap = revitionImageSize(path, 1024, 1024);
+		return FileUtils.saveThumb(bitmap,  path);
+	}
 }

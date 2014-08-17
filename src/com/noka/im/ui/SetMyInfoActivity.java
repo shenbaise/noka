@@ -76,7 +76,6 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		//因为魅族手机下面有三个虚拟的导航按钮，需要将其隐藏掉，不然会遮掉拍照和相册两个按钮，且在setContentView之前调用才能生效
 		int currentapiVersion=android.os.Build.VERSION.SDK_INT;
@@ -98,7 +97,9 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 		tv_set_nick = (TextView) findViewById(R.id.tv_set_nick);
 		layout_head = (RelativeLayout) findViewById(R.id.layout_head);
 		layout_nick = (RelativeLayout) findViewById(R.id.layout_nick);
-		layout_photo = (RelativeLayout)findViewById(R.id.layout_album);
+		// 个人相册
+		layout_album = (RelativeLayout)findViewById(R.id.layout_album);
+		layout_album.setOnClickListener(this);
 		last_photo = (GridView)findViewById(R.id.last_photo);
 		//黑名单提示语
 		layout_black_tips = (RelativeLayout) findViewById(R.id.layout_black_tips);
@@ -113,7 +114,6 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 			initTopBarForLeft("个人资料");
 			layout_head.setOnClickListener(this);
 			layout_nick.setOnClickListener(this);
-			layout_photo.setOnClickListener(this);
 			iv_nickarraw.setVisibility(View.VISIBLE);
 			iv_arraw.setVisibility(View.VISIBLE);
 			btn_back.setVisibility(View.GONE);
@@ -142,8 +142,6 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 				btn_chat.setOnClickListener(this);
 				btn_back.setOnClickListener(this);
 			}
-			
-		//	new PhotoWallAdapter(getApplicationContext(), list);
 			initOtherData();
 		}
 		
@@ -162,7 +160,6 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 	
 	private void initOtherData() {
 		userManager.queryUserInfo(username, new FindListener<User>() {
-
 			@Override
 			public void onError(int arg0, String arg1) {
 				ShowLog("onError onError:"+arg1);
@@ -242,7 +239,16 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 			startAnimActivity(UpdateInfoActivity.class);
 			break;
 		case R.id.layout_album:
-			startAnimActivity(AlbumActivity.class);
+			Intent albumIntent = new Intent(this,AlbumActivity.class);
+			if("me".equals(from)){
+				albumIntent.putExtra("from", "me");
+				albumIntent.putExtra("username", username);
+				startAnimActivity(albumIntent);
+			}else {
+				albumIntent.putExtra("from", "other");
+				albumIntent.putExtra("username", username);
+				startAnimActivity(albumIntent);
+			}
 			break;
 		case R.id.btn_back://黑名单
 			showBlackDialog(user.getUsername());
@@ -271,7 +277,6 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 			
 			@Override
 			public void onSuccess() {
-				// TODO Auto-generated method stub
 				progress.dismiss();
 				ShowToast("发送请求成功，等待对方验证！");
 			}
@@ -360,10 +365,8 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 			}
 		});
 		layout_choose.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				ShowLog("点击相册");
 				layout_photo.setBackgroundColor(getResources().getColor(
 						R.color.base_color_text_white));
@@ -433,7 +436,6 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
 		case NokaConstants.REQUESTCODE_UPLOADAVATAR_CAMERA:// 拍照修改头像

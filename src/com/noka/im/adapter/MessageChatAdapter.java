@@ -163,7 +163,6 @@ public class MessageChatAdapter extends BaseListAdapter<BmobMsg> {
 			
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				Intent intent =new Intent(mContext,SetMyInfoActivity.class);
 				if(getItemViewType(position) == TYPE_RECEIVER_TXT 
 						||getItemViewType(position) == TYPE_RECEIVER_IMAGE

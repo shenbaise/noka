@@ -3,7 +3,6 @@ package com.noka.im.album;
 import java.io.Serializable;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,8 +13,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 import com.noka.im.R;
+import com.noka.im.ui.BaseActivity;
 
-public class PhotoPicActivity extends Activity {
+public class PhotoPicActivity extends BaseActivity {
+	// 图集列表
 	List<ImageBucket> dataList;
 	GridView gridView;
 	ImageBucketAdapter adapter;// 自定义的适配器
@@ -30,7 +31,7 @@ public class PhotoPicActivity extends Activity {
 
 		helper = AlbumHelper.getHelper();
 		helper.init(getApplicationContext());
-
+		initTopBarForLeft("选择照片");
 		initData();
 		initView();
 	}

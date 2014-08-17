@@ -55,9 +55,9 @@ public class SplashActivity extends BaseActivity {
 		if (userManager.getCurrentUser() != null) {
 			// 每次自动登陆的时候就需要更新下当前位置和好友的资料，因为好友的头像，昵称啥的是经常变动的
 			updateUserInfos();
-			mHandler.sendEmptyMessageDelayed(GO_HOME, 2000);
+			mHandler.sendEmptyMessageDelayed(GO_HOME, 200);
 		} else {
-			mHandler.sendEmptyMessageDelayed(GO_LOGIN, 2000);
+			mHandler.sendEmptyMessageDelayed(GO_LOGIN, 200);
 		}
 		
 	}

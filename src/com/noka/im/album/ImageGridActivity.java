@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -24,8 +23,9 @@ import android.widget.Toast;
 import com.noka.im.R;
 import com.noka.im.album.ImageGridAdapter.TextCallback;
 import com.noka.im.config.NokaConstants;
+import com.noka.im.ui.BaseActivity;
 
-public class ImageGridActivity extends Activity {
+public class ImageGridActivity extends BaseActivity {
 	
 	private static String toastMsg = "最多选择"+NokaConstants.MAX_PIC_TO_UPLOAD+"张图片";
 	public static final String EXTRA_IMAGE_LIST = "imagelist";
@@ -69,7 +69,7 @@ public class ImageGridActivity extends Activity {
 		helper.init(getApplicationContext());
 
 		dataList = (List<ImageItem>) getIntent().getSerializableExtra(EXTRA_IMAGE_LIST);
-
+		initTopBarForLeft("选择照片");
 		initView();
 		bt = (Button) findViewById(R.id.btn_ok);
 		bt.setOnClickListener(new OnClickListener() {

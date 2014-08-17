@@ -10,31 +10,58 @@ import android.os.Environment;
 import cn.bmob.im.util.BmobLog;
 
 import com.noka.im.config.NokaConstants;
+import com.noka.im.util.MD5;
 /**
  * @author shenbai
  * 照片缩略图文件管理
  */
 public class FileUtils {
 	private static final String tag = FileUtils.class.getSimpleName();
-	public static void saveBitmap(Bitmap bm, String picName) {
+	
+	public static String saveThumb(Bitmap bm, String picName) {
+		String fileName = MD5.encode(picName);
+		File f = null;
 		try {
-			createSDDir("");
-			File f = new File(NokaConstants.NOKA_IMAGE_PATH, picName); 
+			createSDDir(NokaConstants.NOKA_IMAGE_THUMB_PATH);
+			f = new File(NokaConstants.NOKA_IMAGE_THUMB_PATH, fileName); 
 			if (f.exists()) {
-				f.delete();
+				return f.getAbsolutePath();
 			}
 			FileOutputStream out = new FileOutputStream(f);
 			bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
 			out.close();
+			return f.getAbsolutePath();
 		} catch (FileNotFoundException e) {
 			BmobLog.e(tag, e.getMessage());
 		} catch (IOException e) {
 			BmobLog.e(tag, e.getMessage());
 		}
+		return "";
+	}
+	
+	public static String saveCompressedImg(Bitmap bm, String picName) {
+		String fileName = MD5.encode(picName);
+		File f = null;
+		try {
+			createSDDir(NokaConstants.NOKA_IMAGE_PATH);
+			f = new File(NokaConstants.NOKA_IMAGE_PATH, fileName); 
+			if (f.exists()) {
+				return f.getAbsolutePath();
+			}
+			FileOutputStream out = new FileOutputStream(f);
+			bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
+			out.close();
+			return f.getAbsolutePath();
+		} catch (FileNotFoundException e) {
+			BmobLog.e(tag, e.getMessage());
+		} catch (IOException e) {
+			BmobLog.e(tag, e.getMessage());
+		}
+		return "";
 	}
 
 	public static File createSDDir(String dirName) throws IOException {
-		File dir = new File(NokaConstants.NOKA_IMAGE_PATH + dirName);
+		File dir = new File(dirName);
 		if (Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
 			if(!dir.exists()){
