@@ -25,19 +25,19 @@
             android:background="@drawable/bt_quxiao" />
 
         <Button
-            android:id="@+id/photo_bt_del"
+            android:id="@+id/photo_bt_like"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerInParent="true"
             android:background="@drawable/bt_shanchu" />
 
         <Button
-            android:id="@+id/photo_bt_enter"
+            android:id="@+id/photo_bt_save"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/bt_queding" />
+            android:background="@drawable/save" />
     </RelativeLayout>
 
 </RelativeLayout>

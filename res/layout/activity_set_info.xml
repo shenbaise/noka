@@ -131,11 +131,10 @@
     <RelativeLayout
         android:id="@+id/layout_album"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/about_top_bg"
+        android:layout_height="80dp"
+        android:background="@drawable/btn_selector"
         android:minHeight="80dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
+        android:padding="10dp" >
 
         <TextView
             style="@style/Smile.TextView._Black"
