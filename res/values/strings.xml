@@ -22,6 +22,7 @@
     <string name="album">个人相册</string>
     <string name="ok">确定</string>
     <string name="album_desc">写点什么呢</string>
+    <string name="pull_up_to_load">上拉刷新</string>
     
     <string name="main_tab_recent">会话</string>
     <string name="main_tab_contact">联系人</string>
