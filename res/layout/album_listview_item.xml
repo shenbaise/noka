@@ -1,0 +1,39 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:stretchColumns="0">
+    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:padding="3dip"
+            android:textSize="16sp"
+            android:id="@+id/album_name"
+            android:text="2014-08-18" />
+
+        <TextView
+            android:paddingLeft="8dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/album_describe"
+            android:text="今天天气真不错，不错，不错，不错，不错，不错不错不错，不错啊\n今天天气真不错，不错，不错，不错，不错，不错不错不错，不错啊" >
+        </TextView>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <GridView
+            android:id="@+id/photos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:horizontalSpacing="3dp"
+            android:numColumns="3"
+            android:scrollbars="none"
+            android:verticalSpacing="5dp" >
+        </GridView>
+    </TableRow>
+</TableLayout>

@@ -14,7 +14,8 @@
         android:layout_height="100dp"
         android:layout_margin="8dp"
         android:gravity="left|top"
-        android:hint="@string/album_desc"       
+        android:hint="@string/album_desc"      
+        android:id="@+id/album_desc" 
         android:background="@null" >
     </EditText>
 
