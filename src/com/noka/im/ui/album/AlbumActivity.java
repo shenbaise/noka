@@ -68,6 +68,9 @@ public class AlbumActivity extends BaseActivity {
 		initData();
 		// 上拉刷新
 		pullUp.setMode(Mode.PULL_FROM_END);
+		pullUp.getLoadingLayoutProxy(false, true).setPullLabel(getString(R.string.pull_up_to_load));  
+		pullUp.getLoadingLayoutProxy(false, true).setRefreshingLabel(getString(R.string.xlistview_header_hint_loading));  
+		pullUp.getLoadingLayoutProxy(false, true).setReleaseLabel(getString(R.string.xlistview_header_hint_ready));  
 		pullUp.setOnRefreshListener(new OnRefreshListener<ListView>() {
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
