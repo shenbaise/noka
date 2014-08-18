@@ -42,6 +42,7 @@ import com.noka.im.R;
 import com.noka.im.bean.User;
 import com.noka.im.bean.album.Album;
 import com.noka.im.bean.album.NokaPhoto;
+import com.noka.im.service.album.AlbumService;
 import com.noka.im.ui.AlbumActivity;
 import com.noka.im.ui.BaseActivity;
 import com.noka.im.view.HeaderLayout.onRightImageButtonClickListener;
@@ -52,7 +53,7 @@ public class PublishedActivity extends BaseActivity {
 	private GridAdapter adapter;
 	private BmobUserManager userManager;
 	private EditText album_desc;
-
+	private AlbumService albumService = new AlbumService();
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_selectimg);
@@ -107,9 +108,9 @@ public class PublishedActivity extends BaseActivity {
 						final Album album = new Album();
 						album.setUsername(user.getUsername());
 						album.setDesc(album_desc.getText().toString());
-						album.save(getApplicationContext());
-						
-						
+						if(!albumService.exist(getApplicationContext(), album)){
+							album.save(getApplicationContext());
+						}
 						for(int i = 0;i<list.size();i++){
 							String img = list.get(i);
 							final int r = i;
