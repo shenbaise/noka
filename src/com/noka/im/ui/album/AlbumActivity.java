@@ -67,6 +67,7 @@ public class AlbumActivity extends BaseActivity {
 		// 获取album
 		initData();
 		// 上拉刷新
+		
 		pullUp.setMode(Mode.PULL_FROM_END);
 		pullUp.getLoadingLayoutProxy(false, true).setPullLabel(getString(R.string.pull_up_to_load));  
 		pullUp.getLoadingLayoutProxy(false, true).setRefreshingLabel(getString(R.string.xlistview_header_hint_loading));  

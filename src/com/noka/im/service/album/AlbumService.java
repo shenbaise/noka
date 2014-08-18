@@ -3,9 +3,7 @@
  */
 package com.noka.im.service.album;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.content.Context;
 import cn.bmob.v3.BmobQuery;
@@ -28,51 +26,52 @@ public class AlbumService {
 	/**
 	 * 查找用户上传照片的所有日期，每个日期当做一个相册名，逐日显示。
 	 * @param cxt
-	 * @param userId
+	 * @param username
 	 * @param listener 每天可能有多个Album创建，查出后应该用date字段做个排重。
 	 */
-	public void queryAlbum(Context cxt, String userId,FindListener<Album> listener){
-		albumBq.addWhereEqualTo("userId", userId);
+	public void queryAlbum(Context cxt, String username,FindListener<Album> listener){
+		albumBq.addWhereEqualTo("username", username);
 		albumBq.findObjects(cxt, listener);
 	}
 	/**
 	 * 查找用户上传照片的所有日期，每个日期当做一个相册名，逐日显示。<b>带翻页条件</b>
 	 * @param cxt
-	 * @param userId
+	 * @param username
 	 * @param skip
 	 * @param size
 	 * @param listener
 	 */
-	public void queryAlbum(Context cxt, String userId,int skip,int size,FindListener<Album> listener){
-		albumBq.addWhereEqualTo("userId", userId);
+	public void queryAlbum(Context cxt, String username,int skip,int size,FindListener<Album> listener){
+		albumBq.addWhereEqualTo("username", username);
 		albumBq.setSkip(skip);
-		albumBq.setSkip(size);
+		albumBq.setLimit(size);
+//		albumBq.order("date");
 		albumBq.findObjects(cxt, listener);
 	}
 	/**
 	 * 查找用户某个日期上传的照片
 	 * @param cxt
-	 * @param userId
+	 * @param username
 	 * @param albumDate
 	 * @param listener
 	 */
-	public void queryAlbumPhotos(Context cxt, String userId,String albumDate, FindListener<NokaPhoto> listener){
-		photoBq.addWhereEqualTo("userId", userId);
+	public void queryAlbumPhotos(Context cxt, String username,String albumDate, FindListener<NokaPhoto> listener){
+		photoBq.addWhereEqualTo("username", username);
 		photoBq.addWhereEqualTo("albumDate", albumDate);
 		photoBq.findObjects(cxt, listener);
 	}
 	/**
 	 * 查找用户某个日期上传的照片
 	 * @param cxt
-	 * @param userId
+	 * @param username
 	 * @param albumDate
 	 * @param listener
 	 */
-	public void queryAlbumPhotos(Context cxt, String userId,String albumDate ,int skip,int size, FindListener<NokaPhoto> listener){
-		photoBq.addWhereEqualTo("userId", userId);
+	public void queryAlbumPhotos(Context cxt, String username,String albumDate ,int skip,int size, FindListener<NokaPhoto> listener){
+		photoBq.addWhereEqualTo("username", username);
 		photoBq.addWhereEqualTo("albumDate", albumDate);
 		photoBq.setSkip(skip);
-		photoBq.setSkip(size);
+		photoBq.setLimit(size);
 		photoBq.findObjects(cxt, listener);
 	}
 	/**
@@ -108,33 +107,22 @@ public class AlbumService {
 	 * @param album
 	 * @return
 	 */
-	public boolean exist(Context cxt,Album album){
+	public void saveIfNotExists(final Context cxt,final Album album){
 		albumBq.addWhereEqualTo("username", album.getUsername());
-		albumBq.addWhereEqualTo("date", album.getDate());
-		final Map<String,Boolean> m = new HashMap<String, Boolean>(1);
-		m.put("b", false);
+		albumBq.addWhereEqualTo("albumDate", album.getDate());
 		FindListener<Album> fl = new FindListener<Album>() {
 			@Override
 			public void onError(int arg0, String arg1) {
-				sleep(10);
-				this.notify();
+				
 			}
 			@Override
 			public void onSuccess(List<Album> arg0) {
-				sleep(10);
-				if(arg0.size()>0)
-					m.put("b", true);
-				this.notify();
+				if(null == arg0 || !(arg0.size()>0)){
+					album.save(cxt);
+				}
 			}
 		};
 		albumBq.findObjects(cxt, fl);
-		synchronized(fl){
-            try{
-            	fl.wait();
-            } catch (InterruptedException e) {
-            }       
-        }
-		return m.get("b");
 	}
 	
 	public void sleep(int milliseconds){

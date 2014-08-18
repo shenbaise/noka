@@ -108,9 +108,7 @@ public class PublishedActivity extends BaseActivity {
 						final Album album = new Album();
 						album.setUsername(user.getUsername());
 						album.setDesc(album_desc.getText().toString());
-						if(!albumService.exist(getApplicationContext(), album)){
-							album.save(getApplicationContext());
-						}
+						albumService.saveIfNotExists(getApplicationContext(),album);
 						for(int i = 0;i<list.size();i++){
 							String img = list.get(i);
 							final int r = i;
@@ -212,7 +210,7 @@ public class PublishedActivity extends BaseActivity {
 						parent, false);
 				holder = new ViewHolder();
 				holder.image = (ImageView) convertView
-						.findViewById(R.id.item_grida_image);
+						.findViewById(R.id.grida_image);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();

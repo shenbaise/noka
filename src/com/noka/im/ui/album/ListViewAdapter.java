@@ -13,6 +13,7 @@ import android.widget.TextView;
 import cn.bmob.v3.listener.FindListener;
 
 import com.noka.im.R;
+import com.noka.im.album.NoScrollGridView;
 import com.noka.im.bean.album.Album;
 import com.noka.im.bean.album.NokaPhoto;
 import com.noka.im.service.album.AlbumService;
@@ -60,7 +61,7 @@ public class ListViewAdapter extends BaseAdapter {
 			holder.albumName = (TextView) convertView
 					.findViewById(R.id.album_name);
 			holder.describe = (TextView) convertView.findViewById(R.id.album_describe);
-			holder.gridView = (GridView) convertView
+			holder.gridView = (NoScrollGridView) convertView
 					.findViewById(R.id.photos);
 			convertView.setTag(holder);
 		} else {
@@ -99,7 +100,7 @@ public class ListViewAdapter extends BaseAdapter {
 	private class ViewHolder {
 		TextView albumName;
 		TextView describe;
-		GridView gridView;
+		NoScrollGridView gridView;
 	}
 	
 	public void addAlbum(Album album){

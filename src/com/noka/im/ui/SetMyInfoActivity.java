@@ -46,6 +46,7 @@ import com.noka.im.CustomApplcation;
 import com.noka.im.R;
 import com.noka.im.bean.User;
 import com.noka.im.config.NokaConstants;
+import com.noka.im.ui.album.AlbumActivity;
 import com.noka.im.util.CollectionUtils;
 import com.noka.im.util.ImageLoadOptions;
 import com.noka.im.util.PhotoUtil;
@@ -239,6 +240,7 @@ public class SetMyInfoActivity extends ActivityBase implements OnClickListener{
 			startAnimActivity(UpdateInfoActivity.class);
 			break;
 		case R.id.layout_album:
+//			Intent albumIntent = new Intent(this,AlbumActivity.class);
 			Intent albumIntent = new Intent(this,AlbumActivity.class);
 			if("me".equals(from)){
 				albumIntent.putExtra("from", "me");
