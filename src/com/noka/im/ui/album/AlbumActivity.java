@@ -10,6 +10,10 @@ import android.os.Bundle;
 import android.widget.ListView;
 import cn.bmob.v3.listener.FindListener;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.noka.im.R;
 import com.noka.im.album.PhotoPicActivity;
 import com.noka.im.bean.album.Album;
@@ -23,6 +27,7 @@ import com.noka.im.view.HeaderLayout.onRightImageButtonClickListener;
  */
 public class AlbumActivity extends BaseActivity {
 	private ListView mListView;
+	private PullToRefreshListView pullUp;
 	private ListViewAdapter mListViewAdapter;
 	private List<Album> listData = new ArrayList<Album>();
 	private String username;
@@ -56,10 +61,19 @@ public class AlbumActivity extends BaseActivity {
 	
 	private void init() {
 		mListView = (ListView) findViewById(R.id.albumlist);
+		pullUp = (PullToRefreshListView) findViewById(R.id.pulling_up);
 		mListViewAdapter = new ListViewAdapter(listData, AlbumActivity.this);
 		mListView.setAdapter(mListViewAdapter);
 		// 获取album
 		initData();
+		// 上拉刷新
+		pullUp.setMode(Mode.PULL_FROM_END);
+		pullUp.setOnRefreshListener(new OnRefreshListener<ListView>() {
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				pullData();
+			}
+		});
 	}
 	
 	private void initData() {
@@ -72,7 +86,22 @@ public class AlbumActivity extends BaseActivity {
 			
 			@Override
 			public void onError(int arg0, String arg1) {
-				
+			}
+		});
+	}
+	
+	private void pullData() {
+		albumService.queryAlbum(getApplicationContext(), username, count, skip, new FindListener<Album>() {
+			@Override
+			public void onSuccess(List<Album> arg0) {
+				count+=arg0.size();
+				mListViewAdapter.addAlbums(arg0);
+				pullUp.onRefreshComplete();
+			}
+			
+			@Override
+			public void onError(int arg0, String arg1) {
+				pullUp.onRefreshComplete();
 			}
 		});
 	}
