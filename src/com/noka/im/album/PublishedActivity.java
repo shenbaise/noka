@@ -28,6 +28,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,6 +40,7 @@ import cn.bmob.v3.listener.UploadFileListener;
 
 import com.noka.im.R;
 import com.noka.im.bean.User;
+import com.noka.im.bean.album.Album;
 import com.noka.im.bean.album.NokaPhoto;
 import com.noka.im.ui.AlbumActivity;
 import com.noka.im.ui.BaseActivity;
@@ -49,6 +51,7 @@ public class PublishedActivity extends BaseActivity {
 	private GridView noScrollgridview;
 	private GridAdapter adapter;
 	private BmobUserManager userManager;
+	private EditText album_desc;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,6 +64,7 @@ public class PublishedActivity extends BaseActivity {
 	
 	public void Init() {
 		noScrollgridview = (GridView) findViewById(R.id.noScrollgridview);
+		album_desc = (EditText) findViewById(R.id.album_desc);
 		noScrollgridview.setSelector(new ColorDrawable(Color.TRANSPARENT));
 		adapter = new GridAdapter(this);
 		adapter.update();
@@ -99,6 +103,13 @@ public class PublishedActivity extends BaseActivity {
 							list.add(compressedImg);
 						}
 						final User user = userManager.getCurrentUser(User.class);
+						
+						final Album album = new Album();
+						album.setUsername(user.getUsername());
+						album.setDesc(album_desc.getText().toString());
+						album.save(getApplicationContext());
+						
+						
 						for(int i = 0;i<list.size();i++){
 							String img = list.get(i);
 							final int r = i;
@@ -110,6 +121,7 @@ public class PublishedActivity extends BaseActivity {
 									NokaPhoto a = new NokaPhoto();
 									a.setImage(file);
 									a.setUsername(user.getUsername());
+									a.setAlbumDate(album.getDate());
 									a.save(getApplicationContext(), new SaveListener() {
 										@Override
 										public void onSuccess() {
