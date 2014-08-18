@@ -15,5 +15,9 @@
 		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent" 
 		android:focusable="false" 
-		/> 
+		/>
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+    android:id="@+id/pulling_up"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
 </RelativeLayout>
