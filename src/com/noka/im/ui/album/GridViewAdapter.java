@@ -1,6 +1,8 @@
 package com.noka.im.ui.album;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,19 +12,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.noka.im.R;
-import com.noka.im.bean.album.Album;
 import com.noka.im.bean.album.NokaPhoto;
 
 public class GridViewAdapter extends BaseAdapter {
 	private Context mContext;
 	private List<NokaPhoto> gridData;
-	
-	private Album album;
+	private static final Set<String> mark = new HashSet<String>();	// 标记是否更新了image
 	
 	public GridViewAdapter(Context mContext,List<NokaPhoto> mList) {
 		super();
 		this.mContext = mContext;
 		this.gridData = mList;
+		
 	}
 
 	@Override
@@ -61,11 +62,16 @@ public class GridViewAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-
 		if (this.gridData != null) {
 			NokaPhoto nokaPhoto = this.gridData.get(position);
 			if (holder.image != null) {
-				nokaPhoto.getImage().loadImageThumbnail(mContext, holder.image, 80, 80);
+				if(null==holder.image.getDrawable()){
+					nokaPhoto.getImage().loadImageThumbnail(mContext, holder.image, 90, 90);
+				}
+//				if(!mark.contains(parent.getId() + "#" + position)){
+					
+//					mark.add(parent.getId() + "#" + position);
+//				}
 			}
 		}
 		return convertView;

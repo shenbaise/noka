@@ -26,8 +26,7 @@ import com.noka.im.view.HeaderLayout.onRightImageButtonClickListener;
  *
  */
 public class AlbumActivity extends BaseActivity {
-	private ListView mListView;
-	private PullToRefreshListView pullUp;
+	private PullToRefreshListView mListView;
 	private ListViewAdapter mListViewAdapter;
 	private List<Album> listData = new ArrayList<Album>();
 	private String username;
@@ -60,19 +59,18 @@ public class AlbumActivity extends BaseActivity {
 	
 	
 	private void init() {
-		mListView = (ListView) findViewById(R.id.albumlist);
-		pullUp = (PullToRefreshListView) findViewById(R.id.pulling_up);
+		mListView = (PullToRefreshListView) findViewById(R.id.albumlist);
 		mListViewAdapter = new ListViewAdapter(listData, AlbumActivity.this);
 		mListView.setAdapter(mListViewAdapter);
 		// 获取album
 		initData();
 		// 上拉刷新
 		
-		pullUp.setMode(Mode.PULL_FROM_END);
-		pullUp.getLoadingLayoutProxy(false, true).setPullLabel(getString(R.string.pull_up_to_load));  
-		pullUp.getLoadingLayoutProxy(false, true).setRefreshingLabel(getString(R.string.xlistview_header_hint_loading));  
-		pullUp.getLoadingLayoutProxy(false, true).setReleaseLabel(getString(R.string.xlistview_header_hint_ready));  
-		pullUp.setOnRefreshListener(new OnRefreshListener<ListView>() {
+		mListView.setMode(Mode.PULL_FROM_END);
+		mListView.getLoadingLayoutProxy(false, true).setPullLabel(getString(R.string.pull_up_to_load));  
+		mListView.getLoadingLayoutProxy(false, true).setRefreshingLabel(getString(R.string.xlistview_header_hint_loading));  
+		mListView.getLoadingLayoutProxy(false, true).setReleaseLabel(getString(R.string.xlistview_header_hint_ready));  
+		mListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 				pullData();
@@ -100,12 +98,12 @@ public class AlbumActivity extends BaseActivity {
 			public void onSuccess(List<Album> arg0) {
 				count+=arg0.size();
 				mListViewAdapter.addAlbums(arg0);
-				pullUp.onRefreshComplete();
+				mListView.onRefreshComplete();
 			}
 			
 			@Override
 			public void onError(int arg0, String arg1) {
-				pullUp.onRefreshComplete();
+				mListView.onRefreshComplete();
 			}
 		});
 	}
