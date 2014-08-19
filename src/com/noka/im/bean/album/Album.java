@@ -18,9 +18,9 @@ public class Album extends BmobObject {
 	private static final long serialVersionUID = 8195634484518195803L;
 	
 	/**
-	 * yyyy-MM-dd
+	 * yyyy-MM-dd HH:mm
 	 */
-	private String date = TimeUtil.dateToString(new Date(), TimeUtil.FORMAT_DATE);
+	private String date = TimeUtil.dateToString(new Date(), TimeUtil.YYYY_MM_DD_HH_MM);
 	/**
 	 * 描述
 	 */

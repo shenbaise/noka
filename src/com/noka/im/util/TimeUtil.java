@@ -13,6 +13,7 @@ public class TimeUtil {
 	public final static String FORMAT_MONTH_DAY = "MM月dd日";
 	
 	public final static String FORMAT_DATE = "yyyy-MM-dd";
+	public final static String YYYY_MM_DD_HH_MM = "yyyy-MM-dd HH:mm";
 	public final static String FORMAT_TIME = "HH:mm";
 	public final static String FORMAT_MONTH_DAY_TIME = "MM月dd日  hh:mm";
 	

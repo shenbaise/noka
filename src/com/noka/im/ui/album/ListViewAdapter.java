@@ -76,11 +76,10 @@ public class ListViewAdapter extends BaseAdapter {
 			if (this.listData != null) {
 				Album album = listData.get(position);
 				if (holder.albumName != null) {
-					holder.albumName.setText(album.getDate());
+					holder.albumName.setText(album.getDate().replace(" ", "\n"));
 				}
 				
 				if(holder.describe != null){
-//					holder.describe.setText("很长很长的描述。。。。。。。。。。很长很长的描述。。。。。。。。。。很长很长的描述。。。。。。。。。。很长很长的描述。。。。。。。。。。\n很长很长的描述。。。。。。。。。。很长很长的描述。。。。。。。。。。");
 					holder.describe.setText(album.getDesc());
 				}
 				if (holder.gridView != null) {
