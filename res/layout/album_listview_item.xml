@@ -2,36 +2,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:stretchColumns="0">
+    android:shrinkColumns="1"
+    android:stretchColumns="2" >
+
     <TableRow>
-        <TextView
-            android:layout_width="wrap_content"
-            android:padding="3dip"
-            android:textSize="16sp"
-            android:id="@+id/album_name"
-            android:text="2014-08-18" />
 
         <TextView
-            android:paddingLeft="8dip"
+            android:id="@+id/album_name"
+            android:layout_width="wrap_content"
+            android:padding="3dp"
+            android:text="2014-08-18"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/album_describe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/album_describe"
+            android:paddingLeft="8dp"
+            android:paddingBottom="4dp"
             android:text="今天天气真不错，不错，不错，不错，不错，不错不错不错，不错啊\n今天天气真不错，不错，不错，不错，不错，不错不错不错，不错啊" >
         </TextView>
     </TableRow>
 
     <TableRow>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <com.noka.im.album.NoScrollGridView
             android:id="@+id/photos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:horizontalSpacing="2dp"
-            android:numColumns="3"
-            android:scrollbars="none"
-            android:verticalSpacing="3dp" >
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="10dp"
+            android:horizontalSpacing="10dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp">
         </com.noka.im.album.NoScrollGridView>
     </TableRow>
+
 </TableLayout>
