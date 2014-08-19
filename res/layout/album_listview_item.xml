@@ -18,7 +18,7 @@
             android:id="@+id/album_describe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
+            android:paddingLeft="1dp"
             android:paddingBottom="4dp"
             android:text="今天天气真不错，不错，不错，不错，不错，不错不错不错，不错啊\n今天天气真不错，不错，不错，不错，不错，不错不错不错，不错啊" >
         </TextView>
@@ -35,10 +35,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="8dp"
+            android:paddingLeft="4dp"
+            android:paddingTop="5dp"
             android:paddingBottom="10dp"
-            android:horizontalSpacing="10dp"
-            android:numColumns="auto_fit"
+            android:horizontalSpacing="5dp"
+            android:numColumns="3"
             android:stretchMode="columnWidth"
             android:verticalSpacing="10dp">
         </com.noka.im.album.NoScrollGridView>
