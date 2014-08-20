@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.noka.im.R;
-import com.noka.im.ui.AlbumActivity;
+import com.noka.im.ui.album.AlbumActivity;
 
 /**
  * 
@@ -63,15 +63,16 @@ public class PhotoActivity extends Activity {
 			}
 		});
 		
-		
+		Intent intent = getIntent();
+		int lp = intent.getIntExtra("LP", 0);
 		pager = (ViewPager) findViewById(R.id.viewpager);
 		pager.setOnPageChangeListener(pageChangeListener);
-		for (int i = 0; i < AlbumActivity.pics.size(); i++) {
-			initListViews(AlbumActivity.pics.get(i));
+		for (int i = 0; i < AlbumActivity.photos.get(lp).size(); i++) {
+			initListViews(AlbumActivity.photos.get(lp).get(i));
 		}
 		adapter = new MyPageAdapter(listViews);// 构造adapter
 		pager.setAdapter(adapter);// 设置适配器
-		Intent intent = getIntent();
+		
 		int id = intent.getIntExtra("ID", 0);
 		pager.setCurrentItem(id);
 	}

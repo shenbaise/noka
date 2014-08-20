@@ -1,23 +1,29 @@
 package com.noka.im.ui.album;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import cn.bmob.v3.listener.FindListener;
 
 import com.noka.im.R;
 import com.noka.im.album.NoScrollGridView;
+import com.noka.im.album.PhotoActivity;
 import com.noka.im.bean.album.Album;
 import com.noka.im.bean.album.NokaPhoto;
 import com.noka.im.service.album.AlbumService;
@@ -58,6 +64,7 @@ public class ListViewAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, final ViewGroup parent) {
 			ViewHolder holder = null;
+			final Context context = mContext;
 			if (convertView == null) {
 				holder = new ViewHolder();
 				convertView = LayoutInflater.from(this.mContext).inflate(
@@ -68,6 +75,20 @@ public class ListViewAdapter extends BaseAdapter {
 				holder.gridView = (NoScrollGridView) convertView
 						.findViewById(R.id.photos);
 				holder.gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));	// 无色
+				if(null==AlbumActivity.photos.get(position))
+					AlbumActivity.photos.put(position, new HashMap<Integer, Bitmap>());
+				holder.gridView.setOnItemClickListener(new OnItemClickListener() {
+					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+							long arg3) {
+						Log.e("##", arg0.toString() + "#" + arg1.toString() + "#"+arg2+"#"+ arg3);
+						Intent intent = new Intent(context,
+								PhotoActivity.class);
+						intent.putExtra("lP", position);
+						intent.putExtra("ID", arg2);
+						context.startActivity(intent);
+					}
+				});
+				
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -76,7 +97,7 @@ public class ListViewAdapter extends BaseAdapter {
 			if (this.listData != null) {
 				Album album = listData.get(position);
 				if (holder.albumName != null) {
-					holder.albumName.setText(album.getDate());
+					holder.albumName.setText(album.getDate().replace(" ", "\n"));
 				}
 				
 				if(holder.describe != null){
@@ -91,7 +112,7 @@ public class ListViewAdapter extends BaseAdapter {
 						albumService.queryAlbumPhotos(mContext, data.getUsername(), data.getDate(), new FindListener<NokaPhoto>() {
 							@Override
 							public void onSuccess(List<NokaPhoto> arg0) {
-								GridViewAdapter gridViewAdapter = new GridViewAdapter(mContext, arg0);
+								GridViewAdapter gridViewAdapter = new GridViewAdapter(mContext, arg0,position);
 								fholder.gridView.setAdapter(gridViewAdapter);
 							}
 							@Override
@@ -103,7 +124,6 @@ public class ListViewAdapter extends BaseAdapter {
 					}
 				}
 			}
-		Log.e("#list view", parent.getId() + "#" + position + "#"+ parent.getChildCount());
 		return convertView;
 	}
 	
