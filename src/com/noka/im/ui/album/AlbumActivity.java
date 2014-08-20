@@ -4,8 +4,11 @@
 package com.noka.im.ui.album;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.ListView;
 import cn.bmob.v3.listener.FindListener;
@@ -33,6 +36,7 @@ public class AlbumActivity extends BaseActivity {
 	private String from;
 	private static int count = 0;
 	private static final int skip = 5;
+	public static final Map<Integer,Map<Integer,Bitmap>> photos = new HashMap<Integer,Map<Integer,Bitmap>>();
 	AlbumService albumService = new AlbumService();
 
 	@Override
@@ -53,7 +57,6 @@ public class AlbumActivity extends BaseActivity {
 		}else{
 			initTopBarForLeft("个人相册");
 		}
-		
 		init();
 	}
 	
@@ -106,5 +109,11 @@ public class AlbumActivity extends BaseActivity {
 				mListView.onRefreshComplete();
 			}
 		});
+	}
+	
+	@Override
+	public void onDestroy (){
+		photos.clear();
+		super.onDestroy();
 	}
 }

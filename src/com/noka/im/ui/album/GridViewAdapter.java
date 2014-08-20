@@ -1,10 +1,11 @@
 package com.noka.im.ui.album;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +14,21 @@ import android.widget.ImageView;
 
 import com.noka.im.R;
 import com.noka.im.bean.album.NokaPhoto;
+import com.noka.im.util.AsyncImageLoader;
+import com.noka.im.util.AsyncImageLoader.ImageCallback;
 
 public class GridViewAdapter extends BaseAdapter {
 	private Context mContext;
 	private List<NokaPhoto> gridData;
-	private static final Set<String> mark = new HashSet<String>();	// 标记是否更新了image
+	private int listPosition;
+	AsyncImageLoader asyncImageLoader = new AsyncImageLoader();
+//	private static final Set<String> mark = new HashSet<String>();	// 标记是否更新了image
 	
-	public GridViewAdapter(Context mContext,List<NokaPhoto> mList) {
+	public GridViewAdapter(Context mContext,List<NokaPhoto> mList,int listPosition) {
 		super();
 		this.mContext = mContext;
 		this.gridData = mList;
-		
+		this.listPosition = listPosition;
 	}
 
 	@Override
@@ -68,10 +73,18 @@ public class GridViewAdapter extends BaseAdapter {
 				if(null==holder.image.getDrawable()){
 					nokaPhoto.getImage().loadImageThumbnail(mContext, holder.image, 90, 90);
 				}
-//				if(!mark.contains(parent.getId() + "#" + position)){
-					
-//					mark.add(parent.getId() + "#" + position);
-//				}
+				asyncImageLoader.loadDrawable(
+					nokaPhoto.getImage().getFileUrl(), new ImageCallback() {
+						@Override
+						public void imageLoaded(Drawable imageDrawable,
+								String imageUrl) {
+							if(imageDrawable!=null){
+								Bitmap b = ((BitmapDrawable)imageDrawable).getBitmap();
+								AlbumActivity.photos.get(listPosition).put(position,b);
+							}
+						}
+					}
+				);
 			}
 		}
 		return convertView;
