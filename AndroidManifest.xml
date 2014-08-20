@@ -141,6 +141,7 @@
             android:name=".album.PhotoPicActivity" >
         </activity>
         <activity android:name=".ui.AlbumActivity"></activity>
+        <activity android:name=".ui.album.AlbumActivity" />
 
         <!-- baidu map-->
         <meta-data

@@ -75,15 +75,15 @@ public class ListViewAdapter extends BaseAdapter {
 				holder.gridView = (NoScrollGridView) convertView
 						.findViewById(R.id.photos);
 				holder.gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));	// 无色
+				final int p = position;
 				if(null==AlbumActivity.photos.get(position))
 					AlbumActivity.photos.put(position, new HashMap<Integer, Bitmap>());
 				holder.gridView.setOnItemClickListener(new OnItemClickListener() {
 					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 							long arg3) {
-						Log.e("##", arg0.toString() + "#" + arg1.toString() + "#"+arg2+"#"+ arg3);
 						Intent intent = new Intent(context,
 								PhotoActivity.class);
-						intent.putExtra("lP", position);
+						intent.putExtra("LP", p);
 						intent.putExtra("ID", arg2);
 						context.startActivity(intent);
 					}
