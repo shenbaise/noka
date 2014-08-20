@@ -57,7 +57,6 @@ public class AlbumActivity extends BaseActivity {
 		}else{
 			initTopBarForLeft("个人相册");
 		}
-		
 		init();
 	}
 	
@@ -110,5 +109,11 @@ public class AlbumActivity extends BaseActivity {
 				mListView.onRefreshComplete();
 			}
 		});
+	}
+	
+	@Override
+	public void onDestroy (){
+		photos.clear();
+		super.onDestroy();
 	}
 }

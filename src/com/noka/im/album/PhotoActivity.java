@@ -58,7 +58,6 @@ public class PhotoActivity extends Activity {
 		Button photo_bt_enter = (Button) findViewById(R.id.photo_bt_save);
 		photo_bt_enter.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				
 				finish();
 			}
 		});
